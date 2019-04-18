@@ -11,16 +11,17 @@ pub struct Time {
 
 #[derive(Debug, PartialEq, Default)]
 pub struct Book {
-    name: String,
-    time: Time,
-    isbn: Option<String>,
-    pages: Option<usize>,
-    genre: Option<String>,
-    author: Option<String>,
+   pub name: String,
+   pub time: Time,
+   pub isbn: Option<String>,
+   pub pages: Option<usize>,
+   pub genre: Option<String>,
+   pub author: Option<String>,
 }
 
-struct Books {
-    inner: Vec<Book>,
+#[derive(Debug, PartialEq)]
+pub struct Books {
+    pub inner: Vec<Book>,
 }
 
 impl Books {
@@ -32,22 +33,22 @@ impl Books {
         for l in lines {
             match l.trim() {
                 s if s.to_lowercase().starts_with("isbn:") => {
-                    let book: &mut Book = books.last_mut().unwrap();
+                    let book: &mut Book = books.last_mut().expect("Not currently parsing a book");
                     let chunks: Vec<_> = s.split(":").collect();
                     book.isbn = Some(chunks.get(1).unwrap().trim().into());
                 }
                 s if s.to_lowercase().starts_with("genre:") => {
-                    let book: &mut Book = books.last_mut().unwrap();
+                    let book: &mut Book = books.last_mut().expect("Not currently parsing a book");
                     let chunks: Vec<_> = s.split(":").collect();
                     book.genre = Some(chunks.get(1).unwrap().trim().into());
                 }
                 s if s.to_lowercase().starts_with("pages:") => {
-                    let book: &mut Book = books.last_mut().unwrap();
+                    let book: &mut Book = books.last_mut().expect("Not currently parsing a book");
                     let chunks: Vec<_> = s.split(":").collect();
                     book.pages = Some(chunks.get(1).unwrap().trim().parse().unwrap());
                 }
                 s if s.to_lowercase().starts_with("author:") => {
-                    let book: &mut Book = books.last_mut().unwrap();
+                    let book: &mut Book = books.last_mut().expect("Not currently parsing a book");
                     let chunks: Vec<_> = s.split(":").collect();
                     book.author = Some(chunks.get(1).unwrap().trim().into());
                 }
